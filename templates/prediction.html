@@ -4,57 +4,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Recruitment Prediction</title>
+    <title>Campus Recruitment Prediction - Result</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
+            background-color: #a5dacc;
             margin: 0;
             padding: 20px;
         }
 
         .container {
-            text-align: center;
             background-color: #fff;
-            padding: 20px;
+            padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         h1 {
             color: #333;
+            text-align: center;
+            margin-bottom: 10px;
         }
 
-        p {
+        .result-section {
+            text-align: center;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .result-section h2 {
+            margin: 0 0 10px 0;
             font-size: 18px;
-            color: #555;
+            font-weight: normal;
+        }
+
+        .salary {
+            font-size: 42px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .salary-details {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .detail-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .detail-box .label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .detail-box .value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .category-badge.high {
+            background-color: #28a745;
+        }
+
+        .category-badge.medium {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .category-badge.low {
+            background-color: #dc3545;
+        }
+
+        .category-badge.neutral {
+            background-color: #6c757d;
+        }
+
+        .inputs-section {
+            margin-top: 30px;
+        }
+
+        .inputs-section h3 {
+            color: #333;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .input-item {
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+
+        .input-item .label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-item .value {
+            font-size: 16px;
+            color: #333;
+            font-weight: 600;
+            margin-top: 3px;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 30px;
         }
 
         .button {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 12px 30px;
             font-size: 16px;
             font-weight: bold;
             text-decoration: none;
             color: #fff;
             background-color: #007BFF;
             border-radius: 5px;
-            margin-top: 20px;
+            margin: 5px;
+            transition: background-color 0.3s;
         }
 
         .button:hover {
             background-color: #0056b3;
+        }
+
+        .button.secondary {
+            background-color: #6c757d;
+        }
+
+        .button.secondary:hover {
+            background-color: #545b62;
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Campus Recruitment Prediction</h1>
-        <p>Your predicted salary is <span id="result">{{ result }}</span> INR.</p>
-        <a class="button" href="/">Home</a>
+        <h1>Prediction Result</h1>
+
+        <div class="result-section">
+            <h2>Predicted Annual Salary</h2>
+            <div class="salary">₹{{ result }}</div>
+            <span class="category-badge {{ category_class }}">{{ category }}</span>
+
+            <div class="salary-details">
+                <div class="detail-box">
+                    <div class="label">Monthly Salary</div>
+                    <div class="value">₹{{ monthly }}</div>
+                </div>
+                <div class="detail-box">
+                    <div class="label">Placement Status</div>
+                    <div class="value">{{ inputs.status }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="inputs-section">
+            <h3>Your Input Parameters</h3>
+            <div class="inputs-grid">
+                <div class="input-item">
+                    <div class="label">Gender</div>
+                    <div class="value">{{ inputs.gender }}</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">Secondary School Score</div>
+                    <div class="value">{{ inputs.ssc_p }}%</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">Secondary School Board</div>
+                    <div class="value">{{ inputs.ssc_b }}</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">High School Score</div>
+                    <div class="value">{{ inputs.hsc_p }}%</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">High School Board</div>
+                    <div class="value">{{ inputs.hsc_b }}</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">High School Stream</div>
+                    <div class="value">{{ inputs.hsc_s }}</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">Degree Score</div>
+                    <div class="value">{{ inputs.degree_p }}%</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">Degree Stream</div>
+                    <div class="value">{{ inputs.degree_t }}</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">Work Experience</div>
+                    <div class="value">{{ inputs.workex }}</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">E-Test Score</div>
+                    <div class="value">{{ inputs.etest_p }}%</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">MBA Specialisation</div>
+                    <div class="value">{{ inputs.specialisation }}</div>
+                </div>
+                <div class="input-item">
+                    <div class="label">MBA Score</div>
+                    <div class="value">{{ inputs.mba_p }}%</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <a class="button" href="/">Make Another Prediction</a>
+        </div>
     </div>
 </body>
 
